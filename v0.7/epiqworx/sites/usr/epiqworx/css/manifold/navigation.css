@@ -1,0 +1,35 @@
+.nav-header {width: 100%; height: 50px; position: absolute; top: 0px; left:0px; z-index: 999; box-shadow: 0 0px 20px 0 rgba(0, 0, 0, 0.2), 0 0px 20px 0 rgba(0, 0, 0, 0.19); }
+.LOGO { position: absolute; left: 10%; }
+.LOGO img {width:48px; height: 48px;}
+.nav-bar {  }
+.ul-nav {list-style-type:none; margin:0; padding:0; }
+.li-nav { display:inline-block; float: left; margin-right: 1px; }
+.li-nav .list-link { display:block; min-width:158px; height: 40px; text-align: center; line-height: 40px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; text-decoration: none; }
+.li-nav:hover .ul-nav .list-link { height: 40px;  line-height: 40px; }
+.li-nav .ul-nav { display: none; position: absolute; }
+.li-nav .ul-nav .li-nav { display: block; float: none; width: 400%;}
+.li-nav .ul-nav .li-nav .list-link { width: auto; min-width: 100%; padding: 0 20px; }
+.ul-nav .li-nav .list-link:hover + .hidden, .hidden:hover { display: block; }
+.show-menu { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; text-decoration: none; text-align: center; padding: 10px 0; display: none;}
+input[type=checkbox] { display: none; }
+input[type=checkbox]:checked ~ #menu{ display: block; }
+@media screen and (max-width: 1910px) {
+    .li-nav .list-link { display:block; min-width:120px; height: 50px; text-align: center; line-height: 50px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; text-decoration: none; }
+}
+@media screen and (max-width: 1455px) {
+    .li-nav .list-link { display:block; min-width:95px; height: 50px; text-align: center; line-height: 50px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; text-decoration: none; }
+}
+@media screen and (max-width: 1200px) {
+    .li-nav .list-link { display:block; min-width:95px; height: 50px; text-align: center; line-height: 50px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; text-decoration: none; }
+}
+@media screen and (max-width : 768px) {
+    .li-nav .ul-nav { display: none; position: absolute; width: 100%;}
+    #LOGO {display: none;}
+    .nav-bar { position: static; right: 0;}
+    .ul-nav { position: static; display: none; }
+    .li-nav { margin-bottom: 1px; }
+    .li-nav .ul-nav {position: static;}
+    .ul-nav .li-nav, .li-nav .list-link { width: 100%; }
+    .show-menu { display:block; }
+    .LOGO {display: none;}
+}
