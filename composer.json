@@ -1,0 +1,11 @@
+{
+  "autoload": {
+      "psr-4": {
+          "Epiqworx\\": "app/Epiqworx",
+          "WWW\\": "www"
+      }
+  },
+  "require": {
+    "twbs/bootstrap": "4.5.1"
+  }
+}

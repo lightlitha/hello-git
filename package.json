@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "@fortawesome/fontawesome-free": "^5.14.0",
+    "babel-loader": "^8.1.0",
+    "bootstrap": "^4.5.1",
+    "css-loader": "^4.2.0",
+    "html-webpack-plugin": "^4.3.0",
+    "jquery": "^3.5.1",
+    "lodash": "^4.17.19",
+    "moment": "^2.27.0",
+    "popper.js": "^1.16.1",
+    "sass": "^1.26.10",
+    "sass-loader": "^9.0.3",
+    "style-loader": "^1.2.1",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  },
+  "scripts": {
+    "dev": "webpack --mode development",
+    "start": "webpack-dev-server --mode development --open",
+    "build": "webpack --mode production"
+  }
+}
