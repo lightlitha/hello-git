@@ -7,6 +7,9 @@
  */
 
 namespace Epiqworx\Route;
+
+use Epiqworx\Glitch\Flaw;
+
 /**
  * Description of Router
  *
@@ -38,24 +41,25 @@ class Router {
     private $class_method;
 
     function __construct() {
-      $this->class_method = unserialize(DEFAULTS);
-
-      $url = $this->uri();
-      
-      if (count($url) == 0) {
-          $this->controller = $this->class_method['CLASS'];
-          $this->method = $this->class_method['METHOD'];
-          $this->controller = new $this->controller();
-      } else {
-          //echo $url[0]."<br/>";
-          $this->setClass($url[0]);
-          $this->controller = new $this->controller();
-          $this->setMethod($this->controller, $url[1]);
-          unset($url[0]);
-          unset($url[1]);
-          $this->params = $url ? array_values($url) : [];
-      }
-      call_user_func_array([$this->controller, $this->method], $this->params);
+        try {
+            $this->class_method = unserialize(DEFAULTS);
+            $url = $this->uri();
+            if (count($url) == 0) {
+                $this->controller = $this->class_method['CLASS'];
+                $this->method = $this->class_method['METHOD'];
+                $this->controller = new $this->controller();
+            } else {
+                $this->setClass($url[0]);
+                $this->controller = new $this->controller();
+                $this->setMethod($this->controller, $url[1]);
+                unset($url[0]);
+                unset($url[1]);
+                $this->params = $url ? array_values($url) : [];
+            }
+            call_user_func_array([$this->controller, $this->method], $this->params);
+        } catch (\Throwable $th) {
+            trigger_error($th->getMessage());
+        }
   }
 
   /**
@@ -63,22 +67,16 @@ class Router {
      * @return array : Class, Method, Method Params
      */
     private function uri() {
-      $uri = explode("/", $this->getRequest());
-      // $webpath = explode("/", WEBROOT);
-      if ($uri[0] === NULL | $uri[0] === "" | $uri[0] === "/") {
-          unset($uri[0]);
-      }
-      // if ($webpath[0] === NULL | $webpath[0] === "" | $webpath[0] === "/") {
-      //     unset($webpath[0]);
-      // }
-      $uri = array_values($uri);
-      // $webpath = array_values($webpath);
-      // for($x = 0; $x < count($webpath); $x++) {
-      //     if($webpath[$x] === $uri[$x]) {
-      //         unset($uri[$x]);
-      //     }
-      // }
-      return array_values($uri);
+        try {
+            $uri = explode("/", $this->getRequest());
+            if ($uri[0] === NULL | $uri[0] === "" | $uri[0] === "/") {
+                unset($uri[0]);
+            }
+            $uri = array_values($uri);
+            return array_values($uri);
+        } catch (\Throwable $th) {
+            trigger_error("Error in the uri function " . $th->getMessage());
+        }
   }
 
   /**
@@ -86,12 +84,16 @@ class Router {
      * @param type $classObj
      */
     private function setClass($classObj) {
-      if (is_readable(WEBCONTROLLER . strtolower($classObj) . '.php')) {
-          $this->controller = $classObj;
-          // require_once WEBCONTROLLER . strtolower($this->controller) . '.php';
-      } else {
-          // \Epiqworx\Abstraction\Glitch::e404("Class : " . $classObj . " Does Not Exist <br>");
-      }
+        $path = unserialize(PATHS);
+        foreach ($path['CONTROLLER'] as $key => $value) {
+            if (is_readable($value . ($classObj) . '.php')) {
+                $this->controller = str_replace("/","\\",$value).$classObj;
+            }
+        }
+        if(empty($this->controller)) {
+            $msg = "Could not find the file for class " . ($classObj);
+            trigger_error($msg);
+        }
   }
 
   /**
@@ -102,15 +104,15 @@ class Router {
      * @param type $method : Method
      */
     private function setMethod($classObj, $method) {
-      if (!is_null($method)) {
-          if (method_exists($classObj, $method)) {
-              $this->method = $method;
-          } else {
-             \Epiqworx\Abstraction\Glitch::e404("Method : " . $method . " Does Not Exist <br>");
-          }
-      } else {
-         \Epiqworx\Abstraction\Glitch::e404("Method : " . $method . " Is Not Set <br>");
-      }
+        if (!is_null($method)) {
+            if (method_exists($classObj, $method)) {
+                $this->method = $method;
+            } else {
+              trigger_error("Method : " . $method . " Does Not Exist <br>");
+            }
+        } else {
+          trigger_error("Method : " . $method . " Is Not Set <br>");
+        }
   }
   
   /**
@@ -119,9 +121,9 @@ class Router {
      * @return string
      */
     private function getRequest() {
-      $urlArray = explode("#", filter_var($_SERVER["REQUEST_URI"], FILTER_SANITIZE_URL));
-      if(!isset($urlArray[1])) { return ''; }
-      else { return $urlArray[1]; }
+        $url = filter_input(INPUT_GET, 'r');
+        if(empty($url)) { return ''; }
+        else { return $url; }
   }
 
 }

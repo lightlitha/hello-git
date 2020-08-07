@@ -18,9 +18,29 @@ use Epiqworx\Views\Resource as Resource;
 
 class Welcome extends Controller {
 
-  public function landing()
+  public function home()
   {
-		$this->render('offline/home', ['var2' => "World", 'var1' => "World"]);
+		$this->render('offline/home');
+  }
+
+  public function about()
+  {
+		$this->render('offline/about');
+  }
+
+  public function docs()
+  {
+		$this->render('offline/docs');
+  }
+
+  public function templates()
+  {
+		$this->render('offline/templates');
+  }
+
+  public function projects()
+  {
+		$this->render('offline/projects');
   }
 
 }

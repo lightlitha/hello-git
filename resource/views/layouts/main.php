@@ -10,9 +10,9 @@
   </head>
   <body id="page-top">
     <main id="app">
-    <?= Epiqworx\Views\Resource::content($this->template) ?>
+      <?= $Resource->content($this->template, unserialize(ROUTE)) ?>
     </main>
-    <script src="<?= Epiqworx\Views\Resource::usr('js/vendors~index.js') ?>"></script>
-    <script src="<?= Epiqworx\Views\Resource::usr('js/index.js') ?>"></script>
+    <script src="<?= $Resource->usr('js/vendors~index.js') ?>"></script>
+    <script src="<?= $Resource->usr('js/index.js') ?>"></script>
   </body>
 </html>

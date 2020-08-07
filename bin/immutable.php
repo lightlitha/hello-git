@@ -6,8 +6,9 @@ define("APPVERSION","v0.5");
 define("PATHS",
     serialize(
         array(
-            "CONTROLLER" => "",
+            "CONTROLLER" => ["WWW/Http/Offline/"],
             "MODEL" => "",
+            "ERROR" => "app/Epiqworx/Glitch/src/",
             "VIEW" => "resource/views/",
             "USR" => "public/",
             "RSC" => "resource/",
@@ -21,7 +22,7 @@ define("DEFAULTS",
     serialize(
         array(
             "CLASS" => "WWW\Http\Offline\Welcome",
-            "METHOD" => "landing",
+            "METHOD" => "home",
         )
     )
 );

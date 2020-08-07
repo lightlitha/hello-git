@@ -4,13 +4,13 @@ namespace Epiqworx\Views;
 /**
 *
 */
-abstract class Resource
+class Resource
 {
   /**
    * USR (Universal System Resources)
    * Used to load node modules
    */
-  static function usr($file)
+  public function usr($file)
   {
     $temp = unserialize(PATHS);
     return $temp['USR'] . $file;
@@ -20,7 +20,7 @@ abstract class Resource
    * RSC (Resources)
    * Used to load public files
    */
-  static function rsc($file)
+  public function rsc($file)
   {
     $temp = unserialize(PATHS);
     return $temp['RSC'] . $file;
@@ -30,7 +30,23 @@ abstract class Resource
    * RSC (Resources)
    * Used to load public files
    */
-  static function section($file)
+  public function error($file, $hold)
+  {
+    $temp = unserialize(PATHS);
+    $template = $temp['ERROR'] . str_replace('.', DIRECTORY_SEPARATOR, $file) . '.php';
+    if (!is_file($template) || !is_readable($template)) {
+      throw new \InvalidArgumentException(
+          "The error template '$template' is invalid.");
+    } 
+    $this->content($template, $hold);
+    return;
+  }
+
+  /**
+   * RSC (Resources)
+   * Used to load public files
+   */
+  public function section($file)
   {
     $temp = unserialize(PATHS);
     $template = $temp['VIEW'] . str_replace('.', DIRECTORY_SEPARATOR, $file) . '.php';
@@ -38,7 +54,11 @@ abstract class Resource
       throw new \InvalidArgumentException(
           "The template '$template' is invalid.");
     } 
-    include_once $template;
+    $hold = [];
+    foreach (unserialize(ROUTE) as $key => $value) {
+      $hold[$key] = "?r=" . $value;
+    }
+    $this->content($template, $hold);
     return; 
   }
 
@@ -46,7 +66,7 @@ abstract class Resource
    * RSC (Resources)
    * Used to load public files
    */
-  static function content($file, $fields = array(), $required = true)
+  public function content($file, $fields = array(), $required = true)
   {
     if($fields) {
       extract($fields);
